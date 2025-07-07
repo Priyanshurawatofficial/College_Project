@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const { upload } = require('../config/cloudinary');
 
-const Sell = require('../models/Sell');
+const Market = require('../models/Marketplace');
 const FoundItem = require('../models/FoundItem');
-const Buy = require('../models/Buy'); // Require Buy model if you have it
-const LostItem = require('../models/LostItem'); // Require LostItem model if you have it
+const LostItem = require('../models/LostItem');
 
 // --- SELL ROUTES ---
 
 // Get all sell items
 router.get('/sell', async (req, res) => {
   try {
-    const items = await Sell.find({ type: 'sell' }).sort({ posted_at: -1 });
+    const items = await Market.find({ type: 'sell' }).sort({ posted_at: -1 });
     res.json(items);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -19,9 +19,15 @@ router.get('/sell', async (req, res) => {
 });
 
 // Post a new sell item
-router.post('/sell', async (req, res) => {
+router.post('/sell', upload.single('image'), async (req, res) => {
   try {
-    const newItem = new Sell({ ...req.body, type: 'sell' });
+    const itemData = {
+      ...req.body,
+      type: 'sell',
+      image: req.file ? req.file.path : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s' // Default image if none uploaded
+    };
+    
+    const newItem = new Market(itemData);
     await newItem.save();
     res.status(201).json(newItem);
   } catch (err) {
@@ -32,7 +38,7 @@ router.post('/sell', async (req, res) => {
 // Delete a sell item
 router.delete('/sell/:id', async (req, res) => {
   try {
-    await Sell.findByIdAndDelete(req.params.id);
+    await Market.findByIdAndDelete(req.params.id);
     res.json({ message: 'Sell item deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -44,7 +50,7 @@ router.delete('/sell/:id', async (req, res) => {
 // Get all buy items
 router.get('/buy', async (req, res) => {
   try {
-    const items = await Buy.find({ type: 'buy' }).sort({ posted_at: -1 });
+    const items = await Market.find({ type: 'buy' }).sort({ posted_at: -1 });
     res.json(items);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -52,9 +58,15 @@ router.get('/buy', async (req, res) => {
 });
 
 // Post a new buy item
-router.post('/buy', async (req, res) => {
+router.post('/buy', upload.single('image'), async (req, res) => {
   try {
-    const newItem = new Buy({ ...req.body, type: 'buy' });
+    const itemData = {
+      ...req.body,
+      type: 'buy',
+      image: req.file ? req.file.path : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s' // Default image if none uploaded
+    };
+    
+    const newItem = new Market(itemData);
     await newItem.save();
     res.status(201).json(newItem);
   } catch (err) {
@@ -65,7 +77,7 @@ router.post('/buy', async (req, res) => {
 // Delete a buy item
 router.delete('/buy/:id', async (req, res) => {
   try {
-    await Buy.findByIdAndDelete(req.params.id);
+    await Market.findByIdAndDelete(req.params.id);
     res.json({ message: 'Buy item deleted' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -85,9 +97,14 @@ router.get('/found', async (req, res) => {
 });
 
 // Post a new found item
-router.post('/found', async (req, res) => {
+router.post('/found', upload.single('image'), async (req, res) => {
   try {
-    const newItem = new FoundItem(req.body);
+    const itemData = {
+      ...req.body,
+      image: req.file ? req.file.path : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDYpXHekZ71OwHAvzt648mNklj8YvCD7DV3g&s' // Default image if none uploaded
+    };
+    
+    const newItem = new FoundItem(itemData);
     await newItem.save();
     res.status(201).json(newItem);
   } catch (err) {
@@ -118,9 +135,14 @@ router.get('/lost', async (req, res) => {
 });
 
 // Post a new lost item
-router.post('/lost', async (req, res) => {
+router.post('/lost', upload.single('image'), async (req, res) => {
   try {
-    const newItem = new LostItem(req.body);
+    const itemData = {
+      ...req.body,
+      image: req.file ? req.file.path : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDYpXHekZ71OwHAvzt648mNklj8YvCD7DV3g&s' // Default image if none uploaded
+    };
+    
+    const newItem = new LostItem(itemData);
     await newItem.save();
     res.status(201).json(newItem);
   } catch (err) {

@@ -32,6 +32,10 @@ const LostItemSchema = new Schema({
     type: String,
     default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDYpXHekZ71OwHAvzt648mNklj8YvCD7DV3g&s',
   },
+  password: {
+  type: String,
+  required: true
+},
   posted_at: {
     type: Date,
     default: Datenow(),

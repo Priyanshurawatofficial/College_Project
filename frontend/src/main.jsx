@@ -6,7 +6,7 @@ import LostFoundPage from "./lost-found-page/LostFoundPage";
 import ReportFound from './lost-found-page/reportfound';
 import ReportLost from './lost-found-page/reportlost';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import BuyAndSell from './buy-sell-page/BuyAndSell';
+import BuyAndSell from './buy-sell-page/Marketplace';
 import AboutUs from './landingpage/about_and_contactus/AboutUs';
 import ContactUs from './landingpage/about_and_contactus/ContactUs';
 

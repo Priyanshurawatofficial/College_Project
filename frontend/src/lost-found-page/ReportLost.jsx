@@ -24,19 +24,50 @@ function ReportLost() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Send form data to backend
-    alert('Lost item reported successfully!');
-    setForm({
-      itemName: '',
-      description: '',
-      location: '',
-      dateLost: '',
-      contact: '',
-      image: null,
-    });
-    setPreview(null);
+    
+    try {
+      // Create FormData to send image and other data
+      const formData = new FormData();
+      formData.append('itemName', form.itemName);
+      formData.append('description', form.description);
+      formData.append('location', form.location);
+      formData.append('dateFound', form.dateLost); // Note: backend uses dateFound for both
+      formData.append('contact', form.contact);
+      formData.append('password', 'temp123'); // You can add a password field or use a default
+      
+      // Add image if selected
+      if (form.image) {
+        formData.append('image', form.image);
+      }
+      
+      // Send to backend
+      const response = await fetch('http://localhost:3000/lost', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        console.log("item inserted (lost item) successfully");
+        alert('Lost item reported successfully!');
+        setForm({
+          itemName: '',
+          description: '',
+          location: '',
+          dateLost: '',
+          contact: '',
+          image: null,
+        });
+        setPreview(null);
+      } else {
+        alert('Failed to report lost item. Please try again.');
+        
+      }
+    } catch (error) {
+      console.error('Error reporting lost item:', error);
+      alert('Error reporting lost item. Please try again.');
+    }
   };
 
   return (

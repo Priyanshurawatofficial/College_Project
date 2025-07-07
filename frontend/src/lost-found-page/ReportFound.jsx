@@ -22,19 +22,48 @@ function ReportFound() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Send form data to backend
-    alert('Found item reported successfully!');
-    setForm({
-      itemName: '',
-      description: '',
-      location: '',
-      dateFound: '',
-      contact: '',
-      image: null,
-    });
-    setPreview(null);
+    
+    try {
+      // Create FormData to send image and other data
+      const formData = new FormData();
+      formData.append('itemName', form.itemName);
+      formData.append('description', form.description);
+      formData.append('location', form.location);
+      formData.append('dateFound', form.dateFound);
+      formData.append('contact', form.contact);
+      formData.append('password', 'temp123'); // You can add a password field or use a default
+      
+      // Add image if selected
+      if (form.image) {
+        formData.append('image', form.image);
+      }
+      
+      // Send to backend
+      const response = await fetch('http://localhost:3000/found', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (response.ok) {
+        alert('Found item reported successfully!');
+        setForm({
+          itemName: '',
+          description: '',
+          location: '',
+          dateFound: '',
+          contact: '',
+          image: null,
+        });
+        setPreview(null);
+      } else {
+        alert('Failed to report found item. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error reporting found item:', error);
+      alert('Error reporting found item. Please try again.');
+    }
   };
 
   return (
