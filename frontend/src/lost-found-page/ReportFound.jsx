@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+const MAX_IMAGE_SIZE_MB = 5;
 
 function ReportFound() {
   const [form, setForm] = useState({
@@ -11,12 +13,18 @@ function ReportFound() {
   });
 
   const [preview, setPreview] = useState(null);
-
+  const [loading, setLoading] = useState(false);
+const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
-      setForm({ ...form, image: files[0] });
-      setPreview(URL.createObjectURL(files[0]));
+      const file = files[0];
+      if (file && file.size / (1024 * 1024) > MAX_IMAGE_SIZE_MB) {
+        alert('Image is too large. Please upload an image smaller than 5MB.');
+        return;
+      }
+      setForm({ ...form, image: file });
+      setPreview(URL.createObjectURL(file));
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -24,47 +32,45 @@ function ReportFound() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setLoading(true);
+
     try {
-      // Create FormData to send image and other data
       const formData = new FormData();
       formData.append('itemName', form.itemName);
       formData.append('description', form.description);
       formData.append('location', form.location);
       formData.append('dateFound', form.dateFound);
       formData.append('contact', form.contact);
-      formData.append('password', 'temp123'); // You can add a password field or use a default
-      
-      // Add image if selected
+      formData.append('password', 'temp123');
+
       if (form.image) {
         formData.append('image', form.image);
       }
-      
-      // Send to backend
+
       const response = await fetch('http://localhost:3000/found', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (response.ok) {
         alert('Found item reported successfully!');
-        setForm({
-          itemName: '',
-          description: '',
-          location: '',
-          dateFound: '',
-          contact: '',
-          image: null,
-        });
-        setPreview(null);
+        navigate('/lost-and-found');
       } else {
         alert('Failed to report found item. Please try again.');
       }
     } catch (error) {
       console.error('Error reporting found item:', error);
       alert('Error reporting found item. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   return (
     <div className="container py-5" style={{ maxWidth: 600 }}>
@@ -72,6 +78,15 @@ function ReportFound() {
       <p className="text-muted text-center mb-4">
         Found something? Please fill out the form below to help return it to its rightful owner. Only a few details are required!
       </p>
+
+     
+    
+    <a href="/lost-and-found" className=" mb-3 btn btn-outline-success btn-lg">
+         ← Back to Lost & Found Page
+        </a>
+  
+
+
       <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-white">
         <div className="mb-3">
           <label className="form-label fw-semibold">Item Name <span className="text-danger">*</span></label>
@@ -98,7 +113,7 @@ function ReportFound() {
           />
         </div>
         <div className="mb-3">
-          <label className="form-label fw-semibold">Date Found (optional) </label>
+          <label className="form-label fw-semibold">Date Found (optional)</label>
           <input
             type="date"
             className="form-control"
@@ -148,8 +163,23 @@ function ReportFound() {
             />
           )}
         </div>
-        <button type="submit" className="btn btn-success w-100 fw-bold">
-          Submit Report
+        <button
+          type="submit"
+          className="btn btn-success w-100 fw-bold"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Submitting...
+            </>
+          ) : (
+            'Submit Report'
+          )}
         </button>
       </form>
     </div>

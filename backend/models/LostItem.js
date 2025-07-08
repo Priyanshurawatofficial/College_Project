@@ -1,13 +1,12 @@
 const { Schema, model } = require('mongoose');
 
 
+
 function Datenow() {
   const date = new Date();
   const options = { day: 'numeric', month: 'long', year: 'numeric' };
   return new Intl.DateTimeFormat('en-US', options).format(date);
 }
-
-
 
 const LostItemSchema = new Schema({
   itemName: {
@@ -21,7 +20,7 @@ const LostItemSchema = new Schema({
     type: String,
     required: true,
   },
-  dateFound: {
+  dateLost: {
     type: Date,
   },
   contact: {
@@ -32,14 +31,19 @@ const LostItemSchema = new Schema({
     type: String,
     default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDYpXHekZ71OwHAvzt648mNklj8YvCD7DV3g&s',
   },
-  password: {
-  type: String,
-  required: true
-},
+  imagePublicId: {
+    type: String,
+    default: null,
+  },
+  erp: {
+    type: String,
+    required: true,
+  },
   posted_at: {
     type: Date,
     default: Datenow(),
-  }
+  },
 });
+
 
 module.exports = model('LostItem', LostItemSchema);

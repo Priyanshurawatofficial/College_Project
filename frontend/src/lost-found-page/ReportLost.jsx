@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+const MAX_IMAGE_SIZE_MB = 5;
 
 function ReportLost() {
   const [form, setForm] = useState({
@@ -6,69 +8,70 @@ function ReportLost() {
     description: '',
     location: '',
     dateLost: '',
+    erp:'',
     contact: '',
     image: null,
   });
 
   const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    // If the input is for the image
     if (e.target.name === 'image') {
       const file = e.target.files[0];
-      setForm({ ...form, image: file }); // Save the file in form state
-      setPreview(URL.createObjectURL(file)); // Show image preview
+       if (file && file.size / (1024 * 1024) > MAX_IMAGE_SIZE_MB) {
+      alert('Image is too large. Please upload an image smaller than 5MB.');
+      return;
+    }
+      setForm({ ...form, image: file });
+      setPreview(URL.createObjectURL(file));
     } else {
-      // For all other inputs (text, date, etc.)
       setForm({ ...form, [e.target.name]: e.target.value });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    setLoading(true);
+
     try {
-      // Create FormData to send image and other data
       const formData = new FormData();
       formData.append('itemName', form.itemName);
       formData.append('description', form.description);
       formData.append('location', form.location);
-      formData.append('dateFound', form.dateLost); // Note: backend uses dateFound for both
+      formData.append('dateLost', form.dateLost);
       formData.append('contact', form.contact);
-      formData.append('password', 'temp123'); // You can add a password field or use a default
-      
-      // Add image if selected
+      formData.append('erp', form.erp);
+
       if (form.image) {
         formData.append('image', form.image);
       }
-      
-      // Send to backend
+
       const response = await fetch('http://localhost:3000/lost', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (response.ok) {
-        console.log("item inserted (lost item) successfully");
-        alert('Lost item reported successfully!');
-        setForm({
-          itemName: '',
-          description: '',
-          location: '',
-          dateLost: '',
-          contact: '',
-          image: null,
-        });
-        setPreview(null);
+        alert('Report submitted successfully!');
+        navigate('/lost-and-found');
       } else {
         alert('Failed to report lost item. Please try again.');
-        
+        setLoading(false);
       }
     } catch (error) {
       console.error('Error reporting lost item:', error);
       alert('Error reporting lost item. Please try again.');
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   return (
     <div className="container py-5" style={{ maxWidth: 600 }}>
@@ -76,6 +79,10 @@ function ReportLost() {
       <p className="text-muted text-center mb-4">
         Please fill out the form below with accurate details to help us reunite you with your lost item.
       </p>
+
+       <a href="/lost-and-found" className=" mb-3 btn btn-outline-primary btn-lg">
+         ← Back to Lost & Found Page
+        </a>
       <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-white">
         <div className="mb-3">
           <label className="form-label fw-semibold">Item Name <span className="text-danger">*</span></label>
@@ -124,6 +131,27 @@ function ReportLost() {
             required
           />
         </div>
+
+         <div className="mb-3">
+          <label className="form-label fw-semibold">
+            Last 3 Digits of ERP<span className="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="erp"
+            value={form.erp}
+            onChange={handleChange}
+            pattern="\d{3}"
+            maxLength={3}
+            placeholder="e.g. 123"
+            required
+          />
+        </div>
+   
+
+
+
         <div className="mb-3">
           <label className="form-label fw-semibold">Contact Information <span className="text-danger">*</span></label>
           <input
@@ -154,8 +182,24 @@ function ReportLost() {
             />
           )}
         </div>
-        <button type="submit" className="btn btn-primary w-100 fw-bold">
-          Submit Report
+
+        <button
+          type="submit"
+          className="btn btn-primary w-100 fw-bold"
+          disabled={loading}
+        >
+          {loading ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Submitting...
+            </>
+          ) : (
+            'Submit Report'
+          )}
         </button>
       </form>
     </div>

@@ -117,6 +117,9 @@ function BuyAndSell() {
       <p className="text-muted text-center mb-4">
         Buy or sell books, gadgets, and student essentials. Post your item or browse listings below!
       </p>
+       <a href="/" className="btn btn-outline-danger btn-lg">
+          ← Back to Main Page
+        </a>
       <div className="d-flex justify-content-center mb-4">
         <button
           className="btn btn-primary fw-bold"
