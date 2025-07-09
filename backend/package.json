@@ -4,6 +4,8 @@
   "description": "this is the backend part of the uttaranchal university found and sell website",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Priyanshu Rawat",
