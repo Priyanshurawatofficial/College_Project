@@ -8,6 +8,7 @@ function ReportFound() {
     description: '',
     location: '',
     dateFound: '',
+    erp: '',
     contact: '',
     image: null,
   });
@@ -41,13 +42,13 @@ const navigate = useNavigate();
       formData.append('location', form.location);
       formData.append('dateFound', form.dateFound);
       formData.append('contact', form.contact);
-      formData.append('password', 'temp123');
+      formData.append('erp', form.erp);
 
       if (form.image) {
         formData.append('image', form.image);
       }
 
-      const response = await fetch('http://localhost:3000/found', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/found`, {
         method: 'POST',
         body: formData,
       });
@@ -120,6 +121,23 @@ const navigate = useNavigate();
             name="dateFound"
             value={form.dateFound}
             onChange={handleChange}
+          />
+        </div>
+
+         <div className="mb-3">
+          <label className="form-label fw-semibold">
+            Last 3 Digits of ERP<span className="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            name="erp"
+            value={form.erp}
+            onChange={handleChange}
+            pattern="\d{3}"
+            maxLength={3}
+            placeholder="e.g. 123"
+            required
           />
         </div>
         <div className="mb-3">

@@ -31,7 +31,11 @@ const MarketSchema = new Schema({
          default: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s', // Default image if none provided
         
     },
-    password: {
+    imagePublicId: {
+    type: String,
+    default: null,
+  },
+    erp: {
   type: String,
   required: true
 },

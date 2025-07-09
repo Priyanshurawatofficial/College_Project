@@ -1,37 +1,49 @@
-import React, { useState } from "react";
-
-const initialItems = [
-  {
-    id: 1,
-    title: "Engineering Mathematics Book",
-    description: "Good condition, 2nd edition. Useful for 1st year students.",
-    price: "₹250",
-    image: "/images/book.jpg",
-    contact: "9876543210",
-    type: "sell",
-  },
-  {
-    id: 2,
-    title: "Casio Scientific Calculator",
-    description: "Almost new, with cover.",
-    price: "₹400",
-    image: "/images/calculator.jpg",
-    contact: "9876543210",
-    type: "sell",
-  },
-  {
-    id: 3,
-    title: "Looking to Buy: Drawing Board",
-    description: "Need a drawing board for architecture course.",
-    price: "₹Negotiable",
-    image: "/images/drawing-board.jpg",
-    contact: "student@email.com",
-    type: "buy",
-  },
-];
+import React, { useState, useEffect} from "react";
+import EditSellForm from './EditSellForm';
+import EditBuyForm from './EditBuyForm';
+import { useNavigate } from "react-router-dom";
 
 function BuyAndSell() {
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [submitloading, setsubmitloading] = useState(false);
+  const [error, setError] = useState(null);
+  const [editingItem, setEditingItem] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
+ const navigate = useNavigate();
+  // Load items from backend
+  useEffect(() => {
+    async function loadItems() {
+      try {
+        const sellRes = await fetch(`${import.meta.env.VITE_API_URL}/sell`);
+        const buyRes = await fetch(`${import.meta.env.VITE_API_URL}/buy`);
+        if (!sellRes.ok || !buyRes.ok) throw new Error(`Server error`);
+        const sellItems = await sellRes.json();
+        const buyItems = await buyRes.json();
+        
+        // Add type field to distinguish between sell and buy items
+        const sellWithType = sellItems.map(item => ({...item, type: 'sell'}));
+        const buyWithType = buyItems.map(item => ({...item, type: 'buy'}));
+        
+        setItems([...sellWithType, ...buyWithType]);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load items. Please try again later.");
+      } finally {
+        setLoading(false);
+        
+      }
+    }
+    loadItems();
+  }, []);
+
+  // Authentication function
+  const confirmERP = (expectedERP) => {
+    const userERP = prompt("Enter your ERP ID to continue:");
+    if (!userERP) return false;
+    return userERP.trim() === expectedERP.trim();
+  };
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({
     title: "",
@@ -40,6 +52,7 @@ function BuyAndSell() {
     contact: "",
     image: null,
     type: "sell",
+    erp:"",
   });
   const [preview, setPreview] = useState(null);
 
@@ -55,6 +68,7 @@ function BuyAndSell() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+     setsubmitloading(true);
     
     try {
       // Create FormData to send image and other data
@@ -63,7 +77,7 @@ function BuyAndSell() {
       formData.append('description', form.description);
       formData.append('price', form.price);
       formData.append('contact', form.contact);
-      formData.append('password', 'temp123'); // You can add a password field or use a default
+      formData.append('erp', form.erp); // You can add a password field or use a default
       
       // Add image if selected
       if (form.image) {
@@ -71,44 +85,93 @@ function BuyAndSell() {
       }
       
       // Send to backend
-      const response = await fetch(`http://localhost:3000/${form.type}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/${form.type}`, {
         method: 'POST',
         body: formData, // Don't set Content-Type header, let browser set it for FormData
       });
-      
+     
       if (response.ok) {
         const newItem = await response.json();
         setItems([newItem, ...items]);
         alert(`${form.type === 'sell' ? 'Item posted for sale' : 'Buy request posted'} successfully!`);
-        
-        // Reset form
+       
         setForm({
           title: "",
           description: "",
           price: "",
           contact: "",
+          erp: "",
           image: null,
           type: "sell",
         });
         setPreview(null);
         setShowForm(false);
+       setsubmitloading(false);
+        
       } else {
         alert('Failed to post item. Please try again.');
+      setsubmitloading(false);
       }
     } catch (error) {
       console.error('Error posting item:', error);
+      setsubmitloading(false);
       alert('Error posting item. Please try again.');
     }
   };
 
-  const handleEdit = (item) => {
-    setForm(item);
-    setPreview(item.image);
-    setShowForm(true);
+  // Edit handler with authentication
+  // Edit handler with authentication
+  const handleEdit = (item)=>{
+    if (!confirmERP(item.erp)) {
+      alert("ERP does not match. You are not authorized to edit this post.");
+      return;
+    }
+    setEditingItem(item);
   };
 
-  const handleDelete = (itemToDelete) => {
-    setItems(items.filter((item) => item.id !== itemToDelete.id));
+  // Delete handler with authentication
+  const handleDelete = async (id, itemERP, itemType) =>{
+    if (!confirmERP(itemERP)) {
+      alert("ERP does not match. You are not authorized to delete this post.");
+      return;
+    }
+
+    const confirmed = window.confirm('Are you sure you want to delete this item?');
+    if (!confirmed) return;
+
+    setDeletingId(id);
+
+    try {
+      const endpoint = itemType === 'sell' ? 'sell' : 'buy';
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/${endpoint}/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setItems(prev => prev.filter(item => item._id !== id));
+      } else {
+        const errData = await response.json();
+        alert(`Failed to delete: ${errData.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      console.error('Error deleting item:', err);
+      alert('Error deleting item. Please try again.');
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  // Handle save after edit
+  const handleSave = (updatedItem) => {
+    setIsSaving(true);
+
+    setTimeout(() => {
+      setItems(prev =>
+        prev.map(item => item._id === updatedItem._id ? {...updatedItem, type: item.type} : item)
+      );
+      setEditingItem(null);
+      setIsSaving(false);
+    }, 500);
   };
 
   return (
@@ -198,6 +261,18 @@ function BuyAndSell() {
             />
           </div>
           <div className="mb-3">
+            <label className="form-label">ERP ID</label>
+            <input
+              type="text"
+              className="form-control"
+              name="erp"
+              value={form.erp}
+              onChange={handleChange}
+              placeholder="Your ERP ID"
+              required
+            />
+          </div>
+          <div className="mb-3">
             <label className="form-label">Image (optional)</label>
             <input
               type="file"
@@ -215,63 +290,125 @@ function BuyAndSell() {
               />
             )}
           </div>
-          <button type="submit" className="btn btn-success w-100 fw-bold">
-            Post Item
+          <button type="submit" className="btn btn-success w-100 fw-bold" disabled={submitloading}>
+            {submitloading ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              Submitting...
+            </>
+          ) : (
+            'Post Item'
+          )}
+
+
+
           </button>
         </form>
       )}
 
-      <div className="row g-4">
-        {items.length === 0 && (
-          <div className="text-center text-muted">No items posted yet.</div>
-        )}
-        {items.map((item) => (
-          <div className="col-md-4" key={item.id}>
-            <div className="card shadow-sm h-100">
-              <img
-                src={
-                  item.type === "sell"
-                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s"
-                    : "https://grafkom.io/wp-content/uploads/2021/01/wanttobuy.jpg"
-                }
-                className="card-img-top"
-                alt={item.title}
-                style={{ height: "180px" }}
-              />
-              <div className="card-body">
-                <span
-                  className={`badge mb-2 ${
-                    item.type === "sell" ? "bg-primary" : "bg-warning text-dark"
-                  }`}
-                >
-                  {item.type === "sell" ? "For Sale" : "Wanted"}
-                </span>
-                <h5 className="card-title">{item.title}</h5>
-                <p className="card-text">{item.description}</p>
-                <div className="mb-2 fw-semibold text-success">{item.price}</div>
-                <div className="mb-2 small text-muted">
-                  <span className="fw-semibold">Contact:</span> {item.contact}
-                </div>
-                {/* Add Edit and Delete buttons below each post */}
-                <div className="d-flex justify-content-between mt-3">
-                  <button
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={() => handleEdit(item)}
+      {/* Loading overlay */}
+      {deletingId && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex justify-content-center align-items-center"
+          style={{ zIndex: 9999, backdropFilter: "blur(5px)" }}
+        >
+          <div className="spinner-border text-light" role="status">
+            <span className="visually-hidden">Deleting...</span>
+          </div>
+          &nbsp;&nbsp;
+          <div className="fw-bold text-danger fs-5">Deleting the post...</div>
+        </div>
+      )}
+
+      {loading ? (
+        <div className="text-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="mt-2">Loading items...</p>
+        </div>
+      ) : error ? (
+        <div className="alert alert-danger text-center">{error}</div>
+      ) : (
+        <div className="row g-4">
+          {items.length === 0 && (
+            <div className="text-center text-muted">No items posted yet.</div>
+          )}
+          {items.map((item) => (
+            <div className="col-md-4" key={item._id || item.id}>
+              <div className="card shadow-sm h-100">
+                <img
+                  src={item.image || 
+                    (item.type === "sell"
+                      ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s"
+                      : "https://grafkom.io/wp-content/uploads/2021/01/wanttobuy.jpg")
+                  }
+                  className="card-img-top"
+                  alt={item.title}
+                  style={{ height: "250px", objectFit: "cover" }}
+                />
+                
+                <div className="card-body">
+                  <span
+                    className={`badge mb-2 ${
+                      item.type === "sell" ? "bg-primary" : "bg-warning text-dark"
+                    }`}
                   >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-outline-danger btn-sm"
-                    onClick={() => handleDelete(item)}
-                  >
-                    Delete
-                  </button>
+                    {item.type === "sell" ? "For Sale" : "Wanted"}
+                  </span>
+                  <h5 className="card-title">{item.title}</h5>
+                  <p className="card-text">{item.description}</p>
+                  <div className="mb-2 fw-semibold text-success">Price: {item.price}</div>
+                  <div className="mb-2 small text-muted">
+                    <span className="fw-semibold">Contact:</span> {item.contact}
+                  </div>
+                  {/* Add Edit and Delete buttons below each post */}
+                  <div className="d-flex justify-content-between mt-3">
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => handleEdit(item)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => handleDelete(item._id, item.erp, item.type)}
+                      disabled={deletingId === item._id}
+                    >
+                      {deletingId === item._id ? (
+                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      ) : (
+                        'Delete'
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Edit modal */}
+      {editingItem && (
+        editingItem.type === 'sell' ? (
+          <EditSellForm
+            item={editingItem}
+            onClose={() => setEditingItem(null)}
+            onSave={handleSave}
+          />
+        ) : (
+          <EditBuyForm
+            item={editingItem}
+            onClose={() => setEditingItem(null)}
+            onSave={handleSave}
+          />
+        )
+      )}
 
       <footer className="mt-5 text-center text-muted small">
         &copy; {new Date().getFullYear()} UU Buy & Sell Marketplace. All rights reserved.

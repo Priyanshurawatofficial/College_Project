@@ -48,7 +48,7 @@ function ReportLost() {
         formData.append('image', form.image);
       }
 
-      const response = await fetch('http://localhost:3000/lost', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/lost`, {
         method: 'POST',
         body: formData,
       });

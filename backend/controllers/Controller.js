@@ -22,11 +22,11 @@ router.post('/sell', upload.single('image'), async (req, res) => {
     let image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s';
     let imagePublicId = null;
 
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      image = result.secure_url;
-      imagePublicId = result.public_id;
-    }
+      if (req.file) {
+  image = req.file.path; 
+  imagePublicId = req.file.filename; 
+}
+
 
     const newItem = new Market({
       ...req.body,
@@ -39,6 +39,35 @@ router.post('/sell', upload.single('image'), async (req, res) => {
     res.status(201).json(newItem);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+router.patch('/sell/:id', upload.single('image'), async (req, res) => {
+  try {
+    const item = await Market.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    // Handle image update
+    if (req.file) {
+      // 1. Delete old image from Cloudinary
+      if (item.imagePublicId) {
+        await cloudinary.uploader.destroy(item.imagePublicId);
+      }
+
+      // 2. Use new image info from multer-cloudinary
+      req.body.image = req.file.path;
+      req.body.imagePublicId = req.file.filename;
+    }
+
+    // 3. Update fields
+    const updatedItem = await Market.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.json(updatedItem);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update item' });
   }
 });
 
@@ -60,6 +89,38 @@ router.delete('/sell/:id', async (req, res) => {
   }
 });
 
+
+router.patch('/lost/:id', upload.single('image'), async (req, res) => {
+  try {
+    const item = await LostItem.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    // Handle image update
+    if (req.file) {
+      // 1. Delete old image from Cloudinary
+      if (item.imagePublicId) {
+        await cloudinary.uploader.destroy(item.imagePublicId);
+      }
+
+      // 2. Use new image info from multer-cloudinary
+      req.body.image = req.file.path;
+      req.body.imagePublicId = req.file.filename;
+    }
+
+    // 3. Update fields
+    const updatedItem = await LostItem.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.json(updatedItem);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update item' });
+  }
+});
+
+
+
 // --- BUY ROUTES ---
 
 router.get('/buy', async (req, res) => {
@@ -76,11 +137,11 @@ router.post('/buy', upload.single('image'), async (req, res) => {
     let image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFs4xa_05ZRIvnlM2c7cVV43td4VHNubEuWw&s';
     let imagePublicId = null;
 
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      image = result.secure_url;
-      imagePublicId = result.public_id;
-    }
+       if (req.file) {
+  image = req.file.path; 
+  imagePublicId = req.file.filename; 
+}
+
 
     const newItem = new Market({
       ...req.body,
@@ -93,6 +154,35 @@ router.post('/buy', upload.single('image'), async (req, res) => {
     res.status(201).json(newItem);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+router.patch('/buy/:id', upload.single('image'), async (req, res) => {
+  try {
+    const item = await Market.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    // Handle image update
+    if (req.file) {
+      // 1. Delete old image from Cloudinary
+      if (item.imagePublicId) {
+        await cloudinary.uploader.destroy(item.imagePublicId);
+      }
+
+      // 2. Use new image info from multer-cloudinary
+      req.body.image = req.file.path;
+      req.body.imagePublicId = req.file.filename;
+    }
+
+    // 3. Update fields
+    const updatedItem = await Market.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.json(updatedItem);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update item' });
   }
 });
 
@@ -130,11 +220,11 @@ router.post('/found', upload.single('image'), async (req, res) => {
     let image = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDYpXHekZ71OwHAvzt648mNklj8YvCD7DV3g&s';
     let imagePublicId = null;
 
-    if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      image = result.secure_url;
-      imagePublicId = result.public_id;
-    }
+     if (req.file) {
+  image = req.file.path; 
+  imagePublicId = req.file.filename; 
+}
+
 
     const newItem = new FoundItem({
       ...req.body,
@@ -146,6 +236,35 @@ router.post('/found', upload.single('image'), async (req, res) => {
     res.status(201).json(newItem);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+router.patch('/found/:id', upload.single('image'), async (req, res) => {
+  try {
+    const item = await FoundItem.findById(req.params.id);
+    if (!item) return res.status(404).json({ error: 'Item not found' });
+
+    // Handle image update
+    if (req.file) {
+      // 1. Delete old image from Cloudinary
+      if (item.imagePublicId) {
+        await cloudinary.uploader.destroy(item.imagePublicId);
+      }
+
+      // 2. Use new image info from multer-cloudinary
+      req.body.image = req.file.path;
+      req.body.imagePublicId = req.file.filename;
+    }
+
+    // 3. Update fields
+    const updatedItem = await FoundItem.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+
+    res.json(updatedItem);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to update item' });
   }
 });
 
@@ -184,10 +303,9 @@ router.post('/lost', upload.single('image'), async (req, res) => {
     let imagePublicId = null;
 
     if (req.file) {
-      const result = await cloudinary.uploader.upload(req.file.path);
-      image = result.secure_url;
-      imagePublicId = result.public_id;
-    }
+  image = req.file.path; 
+  imagePublicId = req.file.filename; 
+}
 
     const newItem = new LostItem({
       ...req.body,
