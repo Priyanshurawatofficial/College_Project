@@ -74,16 +74,16 @@ function ReportLost() {
   }, [preview]);
 
   return (
-    <div className="container py-5" style={{ maxWidth: 600 }}>
-      <h2 className="mb-4 text-primary fw-bold text-center">Report Lost Item</h2>
-      <p className="text-muted text-center mb-4">
+    <div className="container py-3 py-md-5" style={{ maxWidth: 600 }}>
+      <h2 className="mb-3 mb-md-4 text-primary fw-bold text-center">Report Lost Item</h2>
+      <p className="text-muted text-center mb-3 mb-md-4">
         Please fill out the form below with accurate details to help us reunite you with your lost item.
       </p>
 
-       <a href="/lost-and-found" className=" mb-3 btn btn-outline-primary btn-lg">
+       <a href="/lost-and-found" className="mb-3 btn btn-outline-primary btn-lg w-100 w-md-auto">
          ← Back to Lost & Found Page
         </a>
-      <form onSubmit={handleSubmit} className="shadow p-4 rounded bg-white">
+      <form onSubmit={handleSubmit} className="shadow p-3 p-md-4 rounded bg-white">
         <div className="mb-3">
           <label className="form-label fw-semibold">Item Name <span className="text-danger">*</span></label>
           <input

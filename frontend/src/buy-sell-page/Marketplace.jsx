@@ -175,15 +175,15 @@ function BuyAndSell() {
   };
 
   return (
-    <div className="container py-5">
-      <h2 className="mb-4 text-success fw-bold text-center">UU Buy & Sell Marketplace</h2>
-      <p className="text-muted text-center mb-4">
+    <div className="container py-3 py-md-5">
+      <h2 className="mb-3 mb-md-4 text-success fw-bold text-center">UU Buy & Sell Marketplace</h2>
+      <p className="text-muted text-center mb-3 mb-md-4">
         Buy or sell books, gadgets, and student essentials. Post your item or browse listings below!
       </p>
-       <a href="/" className="btn btn-outline-danger btn-lg">
+      <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mb-4">
+        <a href="/" className="btn btn-outline-danger btn-lg">
           ← Back to Main Page
         </a>
-      <div className="d-flex justify-content-center mb-4">
         <button
           className="btn btn-primary fw-bold"
           onClick={() => setShowForm(!showForm)}
@@ -334,12 +334,12 @@ function BuyAndSell() {
       ) : error ? (
         <div className="alert alert-danger text-center">{error}</div>
       ) : (
-        <div className="row g-4">
+        <div className="row g-3 g-md-4">
           {items.length === 0 && (
-            <div className="text-center text-muted">No items posted yet.</div>
+            <div className="col-12 text-center text-muted">No items posted yet.</div>
           )}
           {items.map((item) => (
-            <div className="col-md-4" key={item._id || item.id}>
+            <div className="col-12 col-sm-6 col-md-4" key={item._id || item.id}>
               <div className="card shadow-sm h-100">
                 <img
                   src={item.image || 

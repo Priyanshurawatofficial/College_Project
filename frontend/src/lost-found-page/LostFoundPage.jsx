@@ -120,14 +120,14 @@ const erpField = item.erp;
   </div>
 )}
 
-    <div className="container py-5">
-      <div className="text-center mb-5">
+    <div className="container py-3 py-md-5">
+      <div className="text-center mb-4 mb-md-5">
         <h1 className="fw-bold text-primary">Lost & Found Portal</h1>
         <p className="lead text-muted mt-3">Welcome to the College Lost & Found page...</p>
         <img src="/images/lf.png" alt="Lost and Found" style={{ maxWidth: "180px" }} className="my-3" />
       </div>
 
-      <div className="d-flex justify-content-center gap-4 mb-5">
+      <div className="d-flex flex-column flex-md-row justify-content-center gap-3 gap-md-4 mb-4 mb-md-5">
         <a href="/" className="btn btn-outline-danger btn-lg">
           ← Back to Main Page
         </a>
@@ -149,11 +149,11 @@ const erpField = item.erp;
       ) : error ? (
         <div className="alert alert-danger text-center">{error}</div>
       ) : (
-        <div className="row g-4">
-          {items.length === 0 && <div className="text-center text-muted">No items posted yet.</div>}
+        <div className="row g-3 g-md-4">
+          {items.length === 0 && <div className="col-12 text-center text-muted">No items posted yet.</div>}
 
           {items.map(item => (
-          <div className="col-md-4" key={item._id || item.id}>
+          <div className="col-12 col-sm-6 col-md-4" key={item._id || item.id}>
             <div className="card shadow-sm h-100">
               <img
                 src={item.image || "/images/default-item.jpg"}

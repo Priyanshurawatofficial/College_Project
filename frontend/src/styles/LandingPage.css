@@ -1,6 +1,40 @@
 /* LandingPage.css */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
+
 .card-title {
   font-weight: 900;
+}
+
+/* Hamburger Menu Animation */
+.hamburger-btn span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+.hamburger-btn.active span:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-btn.active span:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
+}
+
+/* Card Hover Effects */
+.card:hover {
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.card {
+  transition: all 0.3s ease;
 }
 
 /* Loader styles */
@@ -26,4 +60,192 @@
   justify-content: center;
   color: #666;
   font-size: 14px;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  /* Mobile container adjustments */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* Mobile navbar styles */
+  .navbar {
+    padding: 0.5rem 1rem !important;
+  }
+  
+  .navbar-brand {
+    font-size: 1rem !important;
+    line-height: 1.2;
+  }
+  
+  .nav-link {
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.75rem !important;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Mobile card adjustments */
+  .card {
+    margin-bottom: 1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+  
+  .card-title {
+    font-size: 1.1rem;
+  }
+  
+  .card-text {
+    font-size: 0.9rem;
+  }
+  
+  /* Mobile button styles */
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Mobile image adjustments */
+  .img-fluid {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* Mobile form adjustments */
+  .form-control {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Mobile spacing adjustments */
+  .py-5 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  
+  .mb-5 {
+    margin-bottom: 2rem !important;
+  }
+  
+  .gap-4 {
+    gap: 1rem !important;
+  }
+  
+  /* Mobile text adjustments */
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h5 {
+    font-size: 1.2rem;
+  }
+  
+  .fs-4 {
+    font-size: 1.25rem !important;
+  }
+  
+  .fs-5 {
+    font-size: 1rem !important;
+  }
+  
+  /* Mobile card image heights */
+  .card-img-top {
+    height: 200px !important;
+  }
+  
+  /* Mobile button groups */
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .d-flex.justify-content-between .btn {
+    width: 100%;
+  }
+  
+  /* Mobile modal adjustments */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .modal-content {
+    border-radius: 0.375rem;
+  }
+  
+  /* Mobile forms */
+  .form-control, .form-select, .form-check-input {
+    font-size: 16px !important;
+  }
+  
+  /* Mobile text area */
+  textarea.form-control {
+    min-height: 100px;
+  }
+  
+  /* Mobile button full width */
+  .btn-lg {
+    width: 100%;
+  }
+  
+  /* Mobile image upload preview */
+  .img-preview {
+    max-width: 100%;
+    max-height: 200px;
+  }
+  
+  /* Mobile navigation buttons */
+  .nav-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .nav-buttons .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  /* Extra small mobile devices */
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .card-body {
+    padding: 0.75rem;
+  }
+  
+  .btn-lg {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Stack navigation items vertically on very small screens */
+  .navbar-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .nav-link {
+    margin-right: 0 !important;
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Adjust campus image for very small screens */
+  .campus-image {
+    width: 90% !important;
+    max-height: 200px !important;
+  }
+  
+  /* Smaller logo on mobile */
+  .logo-image {
+    max-width: 200px !important;
+  }
 }

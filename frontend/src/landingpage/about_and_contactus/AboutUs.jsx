@@ -1,8 +1,8 @@
 function AboutUs() {
     return (
-        <div className="container py-5" style={{ maxWidth: 700 }}>
-            <h2 className="fw-bold text-primary mb-4 text-center">About Us</h2>
-            <div className="bg-white shadow rounded p-4">
+        <div className="container py-3 py-md-5" style={{ maxWidth: 700 }}>
+            <h2 className="fw-bold text-primary mb-3 mb-md-4 text-center">About Us</h2>
+            <div className="bg-white shadow rounded p-3 p-md-4">
                 <p>
                     <strong>College Lost &amp; Found | Buy &amp; Sell Platform</strong> is a student-focused web application designed to help our college community easily report lost and found items, as well as buy and sell student essentials in a safe and convenient way.
                 </p>

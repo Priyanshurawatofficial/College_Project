@@ -1,8 +1,8 @@
 function ContactUs() {
     return (
-        <div className="container py-5" style={{ maxWidth: 700 }}>
-            <h2 className="fw-bold text-primary mb-4 text-center">Contact Us</h2>
-            <div className="bg-white shadow rounded p-4 text-center">
+        <div className="container py-3 py-md-5" style={{ maxWidth: 700 }}>
+            <h2 className="fw-bold text-primary mb-3 mb-md-4 text-center">Contact Us</h2>
+            <div className="bg-white shadow rounded p-3 p-md-4 text-center">
                 <p className="mb-3">
                     For any suggestions, support, or queries, feel free to reach out to:
                 </p>
