@@ -22,6 +22,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/buy-sell" element={<BuyAndSell/>} />
         <Route path="/contact" element={<ContactUs/>} />
         <Route path="/about" element={<AboutUs/>} />
+        {/* Catch-all route for 404s */}
+        <Route path="*" element={<Homepage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
