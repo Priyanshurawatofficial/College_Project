@@ -192,7 +192,7 @@ const Homepage = () => {
               <div className="card-body d-flex flex-column justify-content-between p-4 position-relative">
                 <div className="text-center">
                   <h5 className="card-title fs-3 fw-bold mb-3">UU Lost & Found</h5>
-                  <p className="card-text fs-6">
+                  <p className="card-text fs-6" style={{color:"white"}}>
                     Report lost items or help return found ones. A simple way to connect and recover your belongings.
                   </p>
                 </div>
@@ -235,7 +235,7 @@ const Homepage = () => {
               <div className="card-body d-flex flex-column justify-content-between p-4 position-relative">
                 <div className="text-center">
                   <h5 className="card-title fs-3 fw-bold mb-3">UU Marketplace</h5>
-                  <p className="card-text fs-6">
+                  <p className="card-text fs-6" style={{color:"white"}}>
                     Buy or sell books, gadgets, and student essentials. Safe and easy trading for UU students.
                   </p>
                 </div>

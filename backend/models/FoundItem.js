@@ -1,18 +1,6 @@
 const { Schema, model } = require('mongoose');
 
 
-function Datenow() {
-  const date = new Date();
-  const options = { day: 'numeric', month: 'long', year: 'numeric' };
-  return new Intl.DateTimeFormat('en-US', options).format(date);
-}
-
-
-
-
-
-
-
 
 const FoundItemSchema = new Schema({
   itemName: {
@@ -47,7 +35,7 @@ const FoundItemSchema = new Schema({
   },
   posted_at: {
     type: Date,
-    default: Datenow(),
+    default:Date.now(),
   }
 });
 

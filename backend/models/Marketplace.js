@@ -1,10 +1,5 @@
 const {Schema, model} =require('mongoose');
 
-function Datenow() {
-  const date = new Date();
-  const options = { day: 'numeric', month: 'long', year: 'numeric' };
-  return new Intl.DateTimeFormat('en-US', options).format(date);
-}
 const MarketSchema = new Schema({
     type: {
         type: String,
@@ -41,7 +36,7 @@ const MarketSchema = new Schema({
 },
     posted_at:{
         type: Date,
-        default: Datenow(),
+        default:Date.now(),
     }
 });
 

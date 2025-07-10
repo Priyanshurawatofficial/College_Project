@@ -2,6 +2,7 @@ import React, { useState, useEffect} from "react";
 import EditSellForm from './EditSellForm';
 import EditBuyForm from './EditBuyForm';
 import { useNavigate } from "react-router-dom";
+import { getTimeAgo } from '../utils/timeUtils';
 
 function BuyAndSell() {
   const [items, setItems] = useState([]);
@@ -365,6 +366,10 @@ function BuyAndSell() {
                   <div className="mb-2 fw-semibold text-success">Price: {item.price}</div>
                   <div className="mb-2 small text-muted">
                     <span className="fw-semibold">Contact:</span> {item.contact}
+                  </div>
+                  <div className="mb-2 small text-muted d-flex align-items-center">
+                    <i className="fas fa-clock me-1"></i>
+                    <span>Posted {getTimeAgo(item.posted_at)}</span>
                   </div>
                   {/* Add Edit and Delete buttons below each post */}
                   <div className="d-flex justify-content-between mt-3">

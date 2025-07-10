@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "../styles/LandingPage.css";
 import EditLostForm from './EditLostForm';
 import EditFoundForm from './EditFoundForm';
+import { getTimeAgo, formatLostFoundDate } from '../utils/timeUtils';
 
 const LostFoundPage = () => {
   const [items, setItems] = useState([]);
@@ -168,7 +169,11 @@ const erpField = item.erp;
                 <p className="card-text">Description: {item.description}</p>
                 <p className="card-text">{item.type === 'found' ? 'Found Location' : 'Lost Location'}: {item.location}</p>
                 <p className="card-text">Contact Me: {item.contact}</p>
-                <p className="card-text">{item.type === 'found' ? 'Date Found' : 'Date Lost'}: {item.type === 'found' ? item.dateFound : item.dateLost}</p>
+                <p className="card-text">{item.type === 'found' ? 'Date Found' : 'Date Lost'}: {formatLostFoundDate(item.type === 'found' ? item.dateFound : item.dateLost)}</p>
+                <div className="mb-2 small text-muted d-flex align-items-center mt-4">
+                  <i className="fas fa-clock me-1"></i>
+                  <span>Posted {getTimeAgo(item.posted_at)}</span>
+                </div>
                 
                 <div className="d-flex justify-content-between mt-3">
                   <button className="btn btn-outline-primary btn-sm" onClick={() => handleEdit(item)}>Edit</button>
