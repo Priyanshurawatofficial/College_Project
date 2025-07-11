@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 function AboutUs() {
     return (
         <div className="container py-3 py-md-5" style={{ maxWidth: 700 }}>
@@ -21,7 +22,9 @@ function AboutUs() {
                     </li>
                 </ul>
                 <p>
-                    <strong>Contact:</strong> For suggestions or support, please visit our <a href="/contact" className="fw-bold text-decoration-underline">Contact Us</a> page.
+                    <strong>Contact:</strong> For suggestions or support, please visit our  <Link to="/contact" className="fw-bold text-decoration-underline">
+                               
+                         Contact Us</Link> page.
                 </p>
                 <p className="text-muted mt-3">
                     &copy; {new Date().getFullYear()} Priyanshu Rawat, BCA. All rights reserved.

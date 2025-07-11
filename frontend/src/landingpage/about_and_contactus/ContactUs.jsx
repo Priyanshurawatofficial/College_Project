@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function ContactUs() {
     return (
         <div className="container py-3 py-md-5" style={{ maxWidth: 700 }}>
@@ -9,7 +11,11 @@ function ContactUs() {
                 <p className="fw-bold fs-5">
                     <a href="mailto:vlogsbyrawat@gmail.com" className="text-decoration-none text-primary">
                         vlogsbyrawat@gmail.com
-                    </a>
+                    </a> <br />
+                    
+   <Link to="/" className="mb-3 btn btn-outline-success btn w-30 w-md-auto">
+           ← Back to Home Page
+        </Link>
                 </p>
                 <p className="text-muted mt-4">
                     &copy; {new Date().getFullYear()} Priyanshu Rawat, BCA. All rights reserved.

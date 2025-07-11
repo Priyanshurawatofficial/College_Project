@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 const MAX_IMAGE_SIZE_MB = 5;
-
+import {Link} from "react-router-dom"
 function ReportFound() {
   const [form, setForm] = useState({
     itemName: '',
@@ -81,11 +81,10 @@ const navigate = useNavigate();
       </p>
 
      
-    
-    <a href="/lost-and-found" className="mb-3 btn btn-outline-success btn-lg w-100 w-md-auto">
-         ← Back to Lost & Found Page
-        </a>
   
+   <Link to="/lost-and-found" className="mb-3 btn btn-outline-success btn-lg w-100 w-md-auto">
+           ← Back to Lost & Found Page
+        </Link>
 
 
       <form onSubmit={handleSubmit} className="shadow p-3 p-md-4 rounded bg-white">

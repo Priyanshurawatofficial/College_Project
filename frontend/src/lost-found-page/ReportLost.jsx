@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 const MAX_IMAGE_SIZE_MB = 5;
-
+import { Link } from 'react-router-dom';
 function ReportLost() {
   const [form, setForm] = useState({
     itemName: '',
@@ -80,9 +80,10 @@ function ReportLost() {
         Please fill out the form below with accurate details to help us reunite you with your lost item.
       </p>
 
-       <a href="/lost-and-found" className="mb-3 btn btn-outline-primary btn-lg w-100 w-md-auto">
-         ← Back to Lost & Found Page
-        </a>
+      
+        <Link to="/lost-and-found" className="mb-3 btn btn-outline-primary btn-lg w-100 w-md-auto">
+           ← Back to Lost & Found Page
+        </Link>
       <form onSubmit={handleSubmit} className="shadow p-3 p-md-4 rounded bg-white">
         <div className="mb-3">
           <label className="form-label fw-semibold">Item Name <span className="text-danger">*</span></label>
