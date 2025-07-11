@@ -35,7 +35,7 @@ mongoose.connect(Mongo_Url)
 
 
 
-app.use('/', controller);
+app.use('/priyanshu', controller);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, '0.0.0.0', () => {
