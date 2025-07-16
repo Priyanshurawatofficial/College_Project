@@ -350,7 +350,7 @@ function BuyAndSell() {
                   }
                   className="card-img-top"
                   alt={item.title}
-                  style={{ height: "250px", objectFit: "cover" }}
+                  style={{ height: "250px", objectFit: "" }}
                 />
                 
                 <div className="card-body">
@@ -390,7 +390,12 @@ function BuyAndSell() {
                         'Delete'
                       )}
                     </button>
+                    
                   </div>
+                  <a href={`tel:${item.contact}`}>
+                <button className={`btn btn-primary btn-sm mt-3`}>
+                 Contact Owner
+                </button></a>
                 </div>
               </div>
             </div>

@@ -160,7 +160,7 @@ const erpField = item.erp;
                 src={item.image || "/images/default-item.jpg"}
                 className="card-img-top"
                 alt={item.itemName}
-                style={{ objectFit: "cover", height: "250px" }}
+                style={{ objectFit: "", height: "250px" }}
               />
               <div className="card-body">
                 <h5 className={`card-title ${item.type === "found" ? "text-success" : "text-danger"}`}>
@@ -181,10 +181,11 @@ const erpField = item.erp;
   {deletingId === item._id ? (
     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>) : ('Delete')}</button>
 
-                </div>
+                </div> 
+                <a href={`tel:${item.contact}`}>
                 <button className={`btn btn-${item.type === "found" ? "success" : "primary"} btn-sm mt-3`}>
                   {item.type === "found" ? "Claim Item" : "Contact Owner"}
-                </button>
+                </button></a>
               </div>
             </div>
           </div>
