@@ -156,7 +156,7 @@ const Homepage = () => {
             src="/images/uttaranchal-campus.jpg"
             alt="Campus"
             className="img-fluid rounded mt-4 shadow campus-image"
-            style={{ maxHeight: "300px", width: "80%", maxWidth: "500px" }}
+            style={{ maxHeight: "350px", width: "80%", maxWidth: "580px" }}
           />
         </div>
 
