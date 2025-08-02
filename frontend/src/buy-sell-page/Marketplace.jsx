@@ -3,7 +3,7 @@ import EditSellForm from './EditSellForm';
 import EditBuyForm from './EditBuyForm';
 import { useNavigate } from "react-router-dom";
 import { getTimeAgo } from '../utils/timeUtils';
-
+import {Link} from "react-router-dom" 
 function BuyAndSell() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -182,9 +182,7 @@ function BuyAndSell() {
         Buy or sell books, gadgets, and student essentials. Post your item or browse listings below!
       </p>
       <div className="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 mb-4">
-        <a href="/" className="btn btn-outline-danger btn-lg">
-          ← Back to Main Page
-        </a>
+        <Link className="btn btn-outline-danger btn-lg" to="/"> ← Back to Main Page </Link>
         <button
           className="btn btn-primary fw-bold"
           onClick={() => setShowForm(!showForm)}

@@ -129,9 +129,10 @@ const erpField = item.erp;
       </div>
 
       <div className="d-flex flex-column flex-md-row justify-content-center gap-3 gap-md-4 mb-4 mb-md-5">
-        <a href="/" className="btn btn-outline-danger btn-lg">
-          ← Back to Main Page
+        <a href="/" >
+          
         </a>
+        <Link className="btn btn-outline-danger btn-lg" to="/"> ← Back to Main Page </Link>
         <Link to="/report-lost" className="btn btn-outline-primary btn-lg">
           Report Lost Item
         </Link>
