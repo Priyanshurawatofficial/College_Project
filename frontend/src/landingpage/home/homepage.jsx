@@ -152,6 +152,29 @@ const Homepage = () => {
           <img src="/images/logo.png" alt="UU Logo" className="logo-image mb-3" style={{ maxWidth: "250px", width: "100%" }} />
           <h1 className="fw-bold">Uttranchal University</h1>
           <p className="text-muted">Lost & Found | Buy & Sell Platform</p>
+        <p className='text-danger' style={{color:"#fff",textShadow:"0 0 5px #0ff,0 0 10px #0ff,0 0 20px #0ff,0 0 40px #0ff"}}>How to use this website? <p className='d-inline' style={{textShadow:"none"}}>&nbsp;</p> 
+          <Link
+            to="/help"
+            className="text-decoration-none text-center"
+            style={{
+              fontSize: "1.1rem",
+              border: "2px solid rgba(25, 135, 84, 1)",
+              borderRadius: "10px",
+              color:"green",
+              textShadow:"none",
+              maxWidth:"150px",
+              maxHeight:"50px",
+              padding:"3px"
+            }}
+            
+          >
+            Click Here
+          </Link> </p>
+        
+
+
+
+
           <img
             src="/images/uttaranchal-campus.jpg"
             alt="Campus"

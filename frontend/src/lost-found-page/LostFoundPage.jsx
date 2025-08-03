@@ -212,7 +212,7 @@ const erpField = item.erp;
       )}
 
       <footer className="mt-5 text-center text-muted small">
-        &copy; {new Date().getFullYear()} College Lost & Found. All rights reserved.
+        &copy; {new Date().getFullYear()} © 2025 Priyanshu Rawat, BCA. All rights reserved.
       </footer>
     </div>
   </>);

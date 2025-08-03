@@ -419,7 +419,7 @@ function BuyAndSell() {
       )}
 
       <footer className="mt-5 text-center text-muted small">
-        &copy; {new Date().getFullYear()} UU Buy & Sell Marketplace. All rights reserved.
+        &copy; {new Date().getFullYear()} © 2025 Priyanshu Rawat, BCA. All rights reserved.
       </footer>
     </div>
   );

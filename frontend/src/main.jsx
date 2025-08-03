@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import BuyAndSell from './buy-sell-page/Marketplace';
 import AboutUs from './landingpage/about_and_contactus/AboutUs';
 import ContactUs from './landingpage/about_and_contactus/ContactUs';
+import Help from './landingpage/about_and_contactus/Help';
 
 
 createRoot(document.getElementById('root')).render(
@@ -22,6 +23,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/buy-sell" element={<BuyAndSell/>} />
         <Route path="/contact" element={<ContactUs/>} />
         <Route path="/about" element={<AboutUs/>} />
+        <Route path='/help' element={<Help/>}></Route>
         <Route path="*" element={<Homepage />} />
       </Routes>
     </BrowserRouter>
