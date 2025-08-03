@@ -18,9 +18,6 @@ function Help() {
             />
             <h2 className="text-success mt-3">Welcome to Uttaranchal University Platform!</h2>
           </div>
-          <p className="lead text-center">
-            This comprehensive platform is designed specifically for Uttaranchal University students to:
-          </p>
           <div className="row text-center mt-4">
             <div className="col-md-6">
               <div className="p-3 border rounded">
