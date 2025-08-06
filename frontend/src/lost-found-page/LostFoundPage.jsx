@@ -9,7 +9,7 @@ const LostFoundPage = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingItem, setEditingItem] = useState(null); // ✅ modal editing state
+  const [editingItem, setEditingItem] = useState(null); // modal editing state
 
   useEffect(() => {
     async function loadItems() {
@@ -42,7 +42,7 @@ const LostFoundPage = () => {
   return userERP.trim() === expectedERP.trim();
 };
 
-  // ✅ Edit button handler
+  //  Edit button handler
   const [isSaving, setIsSaving] = useState(false); // Loader while saving edited post
 
   const handleEdit = (item) => {
@@ -54,21 +54,21 @@ const erpField = item.erp;
     setEditingItem(item);
   };
 
-  // ✅ After successful save from modal
+  // After successful save from modal
  const handleSave = (updatedItem) => {
   setIsSaving(true);
 
-  // Simulate delay if needed
+
   setTimeout(() => {
     setItems(prev =>
       prev.map(item => item._id === updatedItem._id ? {...updatedItem, type: item.type} : item)
     );
     setEditingItem(null);
     setIsSaving(false);
-  }, 500); // Optional small delay to show loader
+  }, 500); 
 };
 
-  // ✅ Delete item from server and state
+  // Delete item from server and state
   const [deletingId, setDeletingId] = useState(null);
 
   const handleDelete = async (id, itemERP, itemType) => {
@@ -80,7 +80,7 @@ const erpField = item.erp;
   const confirmed = window.confirm('Are you sure you want to delete this item?');
   if (!confirmed) return;
 
-  setDeletingId(id); // ✅ show loader for this item
+  setDeletingId(id); //show loader for this item
 
   try {
     const endpoint = itemType === 'lost' ? 'lost' : 'found';
@@ -98,7 +98,7 @@ const erpField = item.erp;
     console.error('Error deleting item:', err);
     alert('Error deleting item. Please try again.');
   } finally {
-    setDeletingId(null); // ✅ stop showing loader
+    setDeletingId(null); //  stop showing loader
   }
 };
 
@@ -194,7 +194,7 @@ const erpField = item.erp;
         </div>
       )}
 
-      {/* ✅ Render edit modal when editingItem is set */}
+    
       {editingItem && (
         editingItem.type === 'lost' ? (
           <EditLostForm

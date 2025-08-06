@@ -23,7 +23,7 @@ function BuyAndSell() {
         const sellItems = await sellRes.json();
         const buyItems = await buyRes.json();
         
-        // Add type field to distinguish between sell and buy items
+      
         const sellWithType = sellItems.map(item => ({...item, type: 'sell'}));
         const buyWithType = buyItems.map(item => ({...item, type: 'buy'}));
         
@@ -39,7 +39,7 @@ function BuyAndSell() {
     loadItems();
   }, []);
 
-  // Authentication function
+  
   const confirmERP = (expectedERP) => {
     const userERP = prompt("Enter your ERP ID to continue:");
     if (!userERP) return false;
@@ -72,15 +72,15 @@ function BuyAndSell() {
      setsubmitloading(true);
     
     try {
-      // Create FormData to send image and other data
+      
       const formData = new FormData();
       formData.append('title', form.title);
       formData.append('description', form.description);
       formData.append('price', form.price);
       formData.append('contact', form.contact);
-      formData.append('erp', form.erp); // You can add a password field or use a default
+      formData.append('erp', form.erp); 
       
-      // Add image if selected
+      
       if (form.image) {
         formData.append('image', form.image);
       }
@@ -88,7 +88,7 @@ function BuyAndSell() {
       // Send to backend
       const response = await fetch(`${import.meta.env.VITE_API_URL}/${form.type}`, {
         method: 'POST',
-        body: formData, // Don't set Content-Type header, let browser set it for FormData
+        body: formData,
       });
      
       if (response.ok) {
@@ -120,8 +120,6 @@ function BuyAndSell() {
     }
   };
 
-  // Edit handler with authentication
-  // Edit handler with authentication
   const handleEdit = (item)=>{
     if (!confirmERP(item.erp)) {
       alert("ERP does not match. You are not authorized to edit this post.");
